@@ -8,7 +8,7 @@ export class EndpointService {
     constructor(private http: HttpClient) {}
 
     deneme() {
-        return this.http.post<any>(`${environment.apiURL}/webrtc/first`, {});
+        return this.http.get(`${environment.apiURL}/get`);
     }
 
 }
