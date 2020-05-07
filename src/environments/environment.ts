@@ -1,6 +1,8 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+// To connect from another machine to localhost of the host machine:
+// ng serve --host 0.0.0.0
 
 export const environment = {
   production: false,

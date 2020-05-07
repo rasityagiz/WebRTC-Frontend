@@ -5,14 +5,20 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { EndpointService } from './_services/endpoint.service';
 import { AppHttpInterceptor } from './_interceptors/app-http.interceptor';
+import { MainPageComponent } from './components/main_page/main_page.component';
+import { EnterPageComponent } from './components/enter_page/enter_page.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainPageComponent,
+    EnterPageComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [
     EndpointService, 
