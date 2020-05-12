@@ -5,24 +5,24 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { EndpointService } from './_services/endpoint.service';
 import { AppHttpInterceptor } from './_interceptors/app-http.interceptor';
-import { MainPageComponent } from './components/main_page/main_page.component';
-import { EnterPageComponent } from './components/enter_page/enter_page.component';
-import { AppRoutingModule } from './app-routing.module';
+import { SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
+import { MessageService } from './_services/message.service';
+
+const socketConfig: SocketIoConfig = { url: 'ws://localhost:5000', options: {}};
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent,
-    EnterPageComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    SocketIoModule.forRoot(socketConfig)
   ],
   providers: [
     EndpointService, 
-    { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+    MessageService,
+    // { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

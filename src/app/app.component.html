@@ -1,1 +1,36 @@
-<router-outlet></router-outlet>
+<div>
+  <div class="row">
+    <input type="text" name="nickName" id="nickName">
+    <button name="enterButton" id="enterButton">Enter</button>
+    <button name="exitButton" id="exitButton">Exit</button>
+  </div>
+  <div>
+    <div>
+
+    </div>
+    <div>
+      <div>
+        <button (click)="startButton()" [disabled]="startButtonDisabled">Start</button>
+        <button (click)="callButton()" [disabled]="callButtonDisabled">Call</button>
+        <button (click)="hangupButton()" [disabled]="hangupButtonDisabled">Hang Up</button>
+      </div>
+      <div>
+        <video 
+          (loadedmetadata)="loadedMetadataListener($event)" 
+          autoplay 
+          muted 
+          #localVideo></video>
+        <video
+          (loadedmetadata)="loadedMetadataListener($event)"
+          (resize)="remoteVideoResized(event)"
+          autoplay 
+          #remoteVideo></video>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<button (click)="click()">Buton</button>
