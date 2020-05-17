@@ -5,12 +5,7 @@ import { Observable } from "rxjs";
 @Injectable()
 export class MessageService {
 
-    constructor(private socket: Socket) {
-        /* this.socket.on('connect', () => {
-            console.log('Socket Connected: ', this.socket.ioSocket.connected);
-            this.socket.emit('message', 'Connected!');
-        }); */
-    }
+    constructor(private socket: Socket) {}
 
     listen(eventName: string): Observable<any> {
         return new Observable((subscriber) => {

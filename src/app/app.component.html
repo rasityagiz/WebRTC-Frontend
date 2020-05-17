@@ -1,18 +1,39 @@
-<div>
+<div class="container" style="margin: 50px;">
   <div class="row">
-    <input type="text" name="nickName" id="nickName">
-    <button name="enterButton" id="enterButton">Enter</button>
-    <button name="exitButton" id="exitButton">Exit</button>
-  </div>
-  <div>
-    <div>
-
+    <div class="col-md-2">
+      <input class="form-control" type="text" name="nickName" id="nickName" [(ngModel)]="user">
     </div>
+    <div class="col-md-1">
+      <button class="btn btn-primary" name="enterButton" id="enterButton" 
+        (click)="onEnterButton()" [disabled]="enterButtonDisabled || user == ''">Enter</button>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-secondary" name="exitButton" id="exitButton" 
+        (click)="onExitButton()" [disabled]="exitButtonDisabled">Exit</button>
+    </div>
+  </div> 
+  <div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <p>Your Name: {{userName}}</p>
+        <div class="online-users-list-container">
+          <table class="table table-sm">
+            <tbody>
+              <tr *ngFor="let onlineUser of onlineUsers" (click)="rowClicked($event.target.textContent)">
+                <td><span class="dot"></span>{{onlineUser}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div>
       <div>
-        <button (click)="startButton()" [disabled]="startButtonDisabled">Start</button>
-        <button (click)="callButton()" [disabled]="callButtonDisabled">Call</button>
-        <button (click)="hangupButton()" [disabled]="hangupButtonDisabled">Hang Up</button>
+        <!-- <button (click)="startButton()" [disabled]="startButtonDisabled">Start</button>
+        <button (click)="callButton()" [disabled]="callButtonDisabled">Call</button> -->
+        <button (click)="onHangupButton()" [disabled]="hangupButtonDisabled">Hang Up</button>
       </div>
       <div>
         <video 
@@ -33,4 +54,4 @@
 
 
 
-<button (click)="click()">Buton</button>
+<!-- <button (click)="click()">Buton</button> -->

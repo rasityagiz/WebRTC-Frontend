@@ -1,0 +1,34 @@
+tr {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+tr:hover {
+    background-color: rgb(214, 214, 214);
+}
+
+td {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dot {
+    margin-right: 5px;
+    height: 7px;
+    width: 7px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.online-users-list-container {
+    margin-top: 20%;
+    margin-bottom: 20%;
+    height: 150px;
+    overflow-y: scroll;
+    border: thin solid;
+    border-radius: 3px;
+    border-color: darkgray;
+}
