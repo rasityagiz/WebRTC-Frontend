@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { EndpointService } from './_services/endpoint.service';
 import { AppHttpInterceptor } from './_interceptors/app-http.interceptor';
 import { SocketIoModule, SocketIoConfig} from 'ngx-socket-io';
 import { MessageService } from './_services/message.service';
@@ -21,8 +20,7 @@ const socketConfig: SocketIoConfig = { url: 'ws://localhost:5000', options: {}};
     HttpClientModule,
     SocketIoModule.forRoot(socketConfig)
   ],
-  providers: [
-    EndpointService, 
+  providers: [ 
     MessageService,
     // { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
   ],

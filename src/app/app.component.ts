@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { EndpointService } from './_services/endpoint.service';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core';
 import { MessageService } from './_services/message.service';
 
 @Component({
@@ -7,7 +6,7 @@ import { MessageService } from './_services/message.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy{
 
   @ViewChild('localVideo', { read: ElementRef}) private localVideo: ElementRef;
   @ViewChild('remoteVideo', { read: ElementRef}) private remoteVideo: ElementRef;
@@ -22,9 +21,7 @@ export class AppComponent implements OnInit{
   private onCall: boolean = false;
   private pcCreated: boolean = false;
   private pcrCreated: boolean = false;
-  //public callButtonDisabled: boolean = true;
   public hangupButtonDisabled: boolean = true;
-  //public startButtonDisabled: boolean = false;
 
   private localStream: MediaStream;
   private pc;
@@ -114,11 +111,6 @@ export class AppComponent implements OnInit{
     console.log('Loaded Metadata: ', event);
   }
 
-  /**
-   * Asenkron başlatma butonu fonsksiyonu. navigator nesnesinden getUserMedia
-   * ile kamera ve mikrofona erişerek akışı alıyoruz. Bunu video elementine
-   * aktarıyoruz. Bu akışı localStream diye bir değişkene de aktarıyoruz.
-   */
   async startLocalStream() {
     console.log('Requesting local stream');
     try {
@@ -132,6 +124,7 @@ export class AppComponent implements OnInit{
   }
 
   async startCall () {
+    this.exitButtonDisabled = true;
     this.messageService.listen('answer from server')
       .subscribe(
         (data) => {
@@ -205,7 +198,6 @@ export class AppComponent implements OnInit{
   }
 
   private async handleICECandidateEventAsCaller(event) {
-    // Karşıya "new-ice-candidate" mesajını server aracılığıyla göndereceğiz.
     this.messageService.listen('new ice candidate from server')
       .subscribe(
         (data) => {
@@ -213,29 +205,19 @@ export class AppComponent implements OnInit{
           this.handleNewIceCandidateMsgAsCaller(event);
         }
       );
-    console.log('Anwer on the caller side', this.callAnswer);
-    //if(this.callAnswer) {
-      const newIceCandidate = {
-        type: 'new-ice-candidate',
-        target: this.targetUserName,
-        candidate: event.candidate
-      }
-      console.log('new ice candidate form caller', newIceCandidate);
-      this.messageService.emit('new ice candidate to server', newIceCandidate);
-    //}
+    const newIceCandidate = {
+      type: 'new-ice-candidate',
+      target: this.targetUserName,
+      candidate: event.candidate
+    }
+    this.messageService.emit('new ice candidate to server', newIceCandidate);
   }
 
   private async handleNewIceCandidateMsgAsCaller(event) {
-    console.log('HATA ÖNCESİ', event);
     if(event.candidate != null) {
       this.pc.addIceCandidate(event.candidate);
     }
   }
-
-
-
-
-
 
 
 
@@ -246,6 +228,7 @@ export class AppComponent implements OnInit{
 
   public async handleVideoOfferMsg() {
     this.hangupButtonDisabled = false;
+    this.exitButtonDisabled = true;
     this.pcr = new RTCPeerConnection({});
     this.pcrCreated = true;
 
@@ -289,7 +272,6 @@ export class AppComponent implements OnInit{
   }
 
   private sendAnswer() {
-    //Cevabı gönder. {type: video-answer, sdp: this.pcr.localDescription}
     const answer = {
       name: this.userName,
       target: this.callOffer.name,
@@ -304,15 +286,12 @@ export class AppComponent implements OnInit{
    * event.candidate
    */
   private handleNewIceCandidateMsgAsCallee(event) {
-    console.log('CANDIDATES', event);
     if(event.candidate != null) {
       this.pcr.addIceCandidate(event.candidate);
     }
   }
 
   private async handleICECandidateEventAsCallee(event) {
-    // Karşıya "new-ice-candidate" mesajını server aracılığıyla göndereceğiz.
-    console.log('Sending and receiving ice callee');
     this.messageService.listen('new ice candidate from server')
       .subscribe(
         (data) => {
@@ -325,13 +304,11 @@ export class AppComponent implements OnInit{
       target: this.callOffer.name,
       candidate: event.candidate
     }
-    console.log('new ice candidate form callee', newIceCandidate);
     this.messageService.emit('new ice candidate to server', newIceCandidate);
   }
 
 
   private gotRemoteStream(e) {
-    console.log('Got Remote stream if üstü', e);
     if(this.remoteVideo.nativeElement.srcObject !== e.streams[0]) {
       this.remoteVideo.nativeElement.srcObject = e.streams[0];
       console.log('Received remote stream');
@@ -353,6 +330,13 @@ export class AppComponent implements OnInit{
       this.pcrCreated = false;
     }
     this.hangupButtonDisabled = true;
+    this.exitButtonDisabled = false;
     this.onCall = false;
+  }
+
+  @HostListener('window:beforeunload')
+  ngOnDestroy() {
+    this.onHangupButton();
+    this.onExitButton();
   }
 }

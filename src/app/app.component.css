@@ -32,3 +32,12 @@ td {
     border-radius: 3px;
     border-color: darkgray;
 }
+
+.video-frame {
+    height: 260px;
+    width: 340px;
+    border: groove thin black;
+    background-color: black;
+    margin: 25px;
+    padding: 10px;
+}
