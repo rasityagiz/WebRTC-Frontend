@@ -221,11 +221,6 @@ export class AppComponent implements OnInit, OnDestroy{
 
 
 
-  /**
-   * Bir arama gelirse bir pop up açıp kabul red butonlarıyla 
-   * durumu yöneteceğiz
-   */
-
   public async handleVideoOfferMsg() {
     this.hangupButtonDisabled = false;
     this.exitButtonDisabled = true;
@@ -281,10 +276,6 @@ export class AppComponent implements OnInit, OnDestroy{
     this.messageService.emit('answer to server', answer);
   }
 
-  /**
-   * Serverdan new-ice-candidate mesajı geldiğinde tetiklenecek
-   * event.candidate
-   */
   private handleNewIceCandidateMsgAsCallee(event) {
     if(event.candidate != null) {
       this.pcr.addIceCandidate(event.candidate);
