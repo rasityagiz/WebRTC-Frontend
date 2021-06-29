@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppHttpInterceptor } from './_interceptors/app-http.interceptor';
@@ -21,8 +21,7 @@ const socketConfig: SocketIoConfig = { url: 'ws://localhost:5000', options: {}};
     SocketIoModule.forRoot(socketConfig)
   ],
   providers: [ 
-    MessageService,
-    // { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
